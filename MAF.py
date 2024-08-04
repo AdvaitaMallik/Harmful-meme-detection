@@ -74,7 +74,7 @@ class MultiModalAggressionModel(nn.Module):
 
         self.text_transform = nn.Linear(768, 512)
         self.attention = nn.MultiheadAttention(embed_dim=512, num_heads=8)
-        self.fc = nn.Linear(512 + 512, 5)
+        self.fc = nn.Linear(512 + 512 + 512, 5)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, images, input_ids, attention_mask):
@@ -89,7 +89,7 @@ class MultiModalAggressionModel(nn.Module):
         key_value = image_features.unsqueeze(1)
         attention_output, _ = self.attention(query, key_value, key_value)
 
-        combined_features = torch.cat((attention_output.squeeze(1), text_features), dim=1)
+        combined_features = torch.cat((attention_output.squeeze(1), text_features, image_features), dim=1)
         logits = self.fc(combined_features)
         output = self.softmax(logits)
         return output
@@ -132,11 +132,26 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}")
         validate_model(model, val_loader, criterion)
 
-# Load pretrained models
-clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-bangla_bert_model = BertModel.from_pretrained("sagorsarker/bangla-bert-base")
-bangla_bert_tokenizer = BertTokenizer.from_pretrained("sagorsarker/bangla-bert-base")
+# First time, or in case you have not saved the models
+# clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+# clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+# bangla_bert_model = BertModel.from_pretrained("sagorsarker/bangla-bert-base")
+# bangla_bert_tokenizer = BertTokenizer.from_pretrained("sagorsarker/bangla-bert-base")
+# try:
+#     os.mkdir('pretrained')
+# except:
+#     pass
+
+# # Change paths if required
+# torch.save(clip_model, './pretrained/clip_model')
+# torch.save(clip_processor, './pretrained/clip_processor')
+# torch.save(bangla_bert_model, './pretrained/bangla_bert_model')
+# torch.save(bangla_bert_tokenizer, './pretrained/bangla_bert_tokenizer')
+
+clip_model = torch.load("./pretrained/clip_model")
+clip_processor = torch.load("./pretrained/clip_processor")
+bangla_bert_model = torch.load("./pretrained/bangla_bert_model")
+bangla_bert_tokenizer = torch.load("./pretrained/bangla_bert_tokenizer")
 
 clip_model.to(device)
 bangla_bert_model.to(device)
@@ -175,5 +190,7 @@ if __name__ == "__main__":
     except Exception as err:
         print(err)
         raise
-    torch.save(model.state_dict(), './model/state_dictionary')
-    torch.save(model, './model/entire_model')
+    if input("Do you want to save the model weights? (y/N)").lower() == 'y':
+        torch.save(model.state_dict(), './model/state_dictionary')
+        torch.save(model, './model/entire_model')
+        print("Models saved in 'models' directory")

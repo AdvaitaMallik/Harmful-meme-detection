@@ -33,13 +33,13 @@ class MemeDataset(Dataset):
         caption = self.data.iloc[idx, 1]
         label = self.data.iloc[idx, 2]
 
-        if label[0] == 'p':
+        if label[0] == 'n':
             label = np.array([1, 0, 0, 0, 0])
-        elif label[0] == 'r':
-            label = np.array([0, 1, 0, 0, 0])
         elif label[0] == 'g':
+            label = np.array([0, 1, 0, 0, 0])
+        elif label[0] == 'p':
             label = np.array([0, 0, 1, 0, 0])
-        elif label[0] == 'o':
+        elif label[0] == 'r':
             label = np.array([0, 0, 0, 1, 0])
         else:
             label = np.array([0, 0, 0, 0, 1])
@@ -53,7 +53,7 @@ class MemeDataset(Dataset):
         text_input_ids = text["input_ids"].squeeze(0)
         text_attention_mask = text["attention_mask"].squeeze(0)
 
-        return image, text_input_ids, text_attention_mask, torch.tensor(label, dtype=torch.float)
+        return image, text_input_ids, text_attention_mask, torch.tensor(label, dtype=torch.float), idx
 
 def get_dataloader(csv_file, img_dir, clip_processor, bert_tokenizer, batch_size):
     dataset = MemeDataset(csv_file, img_dir, clip_processor, bert_tokenizer)
@@ -92,9 +92,11 @@ class MultiModalAggressionModel(nn.Module):
         text_features = text_outputs.last_hidden_state[:, 0, :]
         text_features = self.text_transform(text_features)
 
-        query = self.query_transform(text_features).unsqueeze(1)
-        key = self.key_transform(image_features).unsqueeze(1)
-        value = self.value_transform(image_features).unsqueeze(1)
+        # query = self.query_transform(text_features).unsqueeze(1)
+        # key = self.key_transform(image_features).unsqueeze(1)
+        # value = self.value_transform(image_features).unsqueeze(1)
+        query = text_features.unsqueeze(1)
+        key = value = image_features.unsqueeze(1)
         attention_output, _ = self.attention(query, key, value)
 
         combined_features = torch.cat((attention_output.squeeze(1), text_features, image_features), dim=1)
@@ -102,13 +104,14 @@ class MultiModalAggressionModel(nn.Module):
         output = self.softmax(logits)
         return output
 
-def validate_model(model, val_loader, criterion):
+def validate_model(model, val_loader, criterion, print_wrong = False, path = None):
     model.eval()
     running_loss = 0.0
     all_preds = []
     all_labels = []
+    all_indexes = []
     with torch.no_grad():
-        for images, input_ids, attention_mask, labels in val_loader:
+        for images, input_ids, attention_mask, labels, idx in val_loader:
             images, input_ids, attention_mask, labels = images.to(device), input_ids.to(device), attention_mask.to(device), labels.to(device)
             outputs = model(images, input_ids, attention_mask)
             loss = criterion(outputs, labels)
@@ -118,17 +121,27 @@ def validate_model(model, val_loader, criterion):
             _, labels = torch.max(labels, 1)
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
+            all_indexes.extend(idx)
         
         epoch_loss = running_loss / len(val_loader.dataset)
         print(f"Validation Loss: {epoch_loss:.4f}")
-        print(classification_report(all_labels, all_preds, target_names=['PAg', 'RAg', 'GAg', 'Oth', 'NoAg']), flush=True)
+        print(classification_report(all_labels, all_preds, target_names=['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']), flush=True)
+        if print_wrong:
+            targets = ['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']
+            wrong_indexes = []
+            for i in range(len(all_preds)):
+                if all_preds[i] != all_labels[i]:
+                    wrong_indexes.append([all_indexes[i], targets[all_labels[i]], targets[all_preds[i]]])
+            wrong_indexes  = pd.DataFrame(wrong_indexes)
+            wrong_indexes.columns = ['Index', 'Label', 'Prediction']
+            wrong_indexes.to_csv(path)
         sys.stdout.flush()
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
-        for images, input_ids, attention_mask, labels in train_loader:
+        for images, input_ids, attention_mask, labels, idx in train_loader:
             images, input_ids, attention_mask, labels = images.to(device), input_ids.to(device), attention_mask.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = model(images, input_ids, attention_mask)
@@ -140,7 +153,10 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         epoch_loss = running_loss / len(train_loader.dataset)
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}", flush=True)
         sys.stdout.flush()
-        validate_model(model, val_loader, criterion)
+        if epoch != num_epochs - 1:
+            validate_model(model, val_loader, criterion)
+        else:
+            validate_model(model, val_loader, criterion, True, 'validation_misclassified.csv')
 
 # First time, or in case you have not saved the models
 # clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
@@ -197,8 +213,8 @@ if __name__ == "__main__":
     train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs)
 
     # Evaluate on test data
-    print("Evaluating on test data...")
-    validate_model(model, test_loader, criterion)
+    print("Evaluating on test data...", flush=True)
+    validate_model(model, test_loader, criterion, True, 'test_misclassified.csv')
     os.system('osascript -e \'display notification "All epochs are completed." with title "Training Complete"\'')
     print("Do you want to save the model weights? (y/N)", file = sys.stderr, end = "")
     choice = input()

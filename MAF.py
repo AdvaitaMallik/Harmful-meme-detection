@@ -79,7 +79,7 @@ class MultiModalAggressionModel(nn.Module):
         self.attention = nn.MultiheadAttention(embed_dim=512, num_heads=16)
 
         # Dropout layers for regularization
-        self.dropout = nn.Dropout(p=0.1)
+        self.dropout = nn.Dropout(p=0.3)
         
         self.fc = nn.Linear(512 + 512 + 512, 5)
         self.softmax = nn.Softmax(dim=1)

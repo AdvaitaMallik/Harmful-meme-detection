@@ -2,7 +2,7 @@
 # pip install torch torchvision torchaudio transformers pandas pillow scikit-learn
 # git clone https://github.com/shawlyahsan/Bengali-Aggression-Memes
 
-import os
+import os, sys
 import pandas as pd
 import numpy as np
 import torch
@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report
 
 # Device configuration
 device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
+print(f"Using device: {device}", file = sys.stderr)
 
 class MemeDataset(Dataset):
     def __init__(self, csv_file, img_dir, clip_processor, bert_tokenizer):
@@ -79,7 +79,7 @@ class MultiModalAggressionModel(nn.Module):
         self.attention = nn.MultiheadAttention(embed_dim=512, num_heads=16)
 
         # Dropout layers for regularization
-        self.dropout = nn.Dropout(p=0.5)
+        self.dropout = nn.Dropout(p=0.1)
         
         self.fc = nn.Linear(512 + 512 + 512, 5)
         self.softmax = nn.Softmax(dim=1)
@@ -121,7 +121,8 @@ def validate_model(model, val_loader, criterion):
         
         epoch_loss = running_loss / len(val_loader.dataset)
         print(f"Validation Loss: {epoch_loss:.4f}")
-        print(classification_report(all_labels, all_preds, target_names=['PAg', 'RAg', 'GAg', 'Oth', 'NoAg']))
+        print(classification_report(all_labels, all_preds, target_names=['PAg', 'RAg', 'GAg', 'Oth', 'NoAg']), flush=True)
+        sys.stdout.flush()
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
     for epoch in range(num_epochs):
@@ -137,7 +138,8 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             running_loss += loss.item() * images.size(0)
         
         epoch_loss = running_loss / len(train_loader.dataset)
-        print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}")
+        print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}", flush=True)
+        sys.stdout.flush()
         validate_model(model, val_loader, criterion)
 
 # First time, or in case you have not saved the models
@@ -150,7 +152,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
 # except:
 #     pass
 
-# # Change paths if required
+# Change paths if required
 # torch.save(clip_model, './pretrained/clip_model')
 # torch.save(clip_processor, './pretrained/clip_processor')
 # torch.save(bangla_bert_model, './pretrained/bangla_bert_model')
@@ -188,18 +190,28 @@ if __name__ == "__main__":
     criterion = nn.CrossEntropyLoss()
     optimizer = Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
+    f = open('losses.txt', 'w')
+    sys.stdout = f
+
     # Train the model
     train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs)
 
     # Evaluate on test data
     print("Evaluating on test data...")
     validate_model(model, test_loader, criterion)
+    os.system('osascript -e \'display notification "All epochs are completed." with title "Training Complete"\'')
+    print("Do you want to save the model weights? (y/N)", file = sys.stderr, end = "")
+    choice = input()
     try:
-        os.mkdir('model')
-    except Exception as err:
-        print(err)
-        raise
-    if input("Do you want to save the model weights? (y/N)").lower() == 'y':
-        torch.save(model.state_dict(), './model/state_dictionary')
-        torch.save(model, './model/entire_model')
-        print("Models saved in 'models' directory")
+        choice = choice.lower()
+        if choice[0] == 'y':
+            try:
+                os.mkdir('model')
+            except Exception as err:
+                pass
+            torch.save(model.state_dict(), './model/state_dictionary')
+            torch.save(model, './model/entire_model')
+            print("Models saved in 'models' directory", file = sys.stderr)
+    except:
+        pass
+    f.close()

@@ -73,7 +73,14 @@ class MultiModalAggressionModel(nn.Module):
             param.requires_grad = False
 
         self.text_transform = nn.Linear(768, 512)
-        self.attention = nn.MultiheadAttention(embed_dim=512, num_heads=8)
+        self.query_transform = nn.Linear(512, 512)
+        self.key_transform = nn.Linear(512, 512)
+        self.value_transform = nn.Linear(512, 512)
+        self.attention = nn.MultiheadAttention(embed_dim=512, num_heads=16)
+
+        # Dropout layers for regularization
+        self.dropout = nn.Dropout(p=0.5)
+        
         self.fc = nn.Linear(512 + 512 + 512, 5)
         self.softmax = nn.Softmax(dim=1)
 
@@ -85,9 +92,10 @@ class MultiModalAggressionModel(nn.Module):
         text_features = text_outputs.last_hidden_state[:, 0, :]
         text_features = self.text_transform(text_features)
 
-        query = text_features.unsqueeze(1)
-        key_value = image_features.unsqueeze(1)
-        attention_output, _ = self.attention(query, key_value, key_value)
+        query = self.query_transform(text_features).unsqueeze(1)
+        key = self.key_transform(image_features).unsqueeze(1)
+        value = self.value_transform(image_features).unsqueeze(1)
+        attention_output, _ = self.attention(query, key, value)
 
         combined_features = torch.cat((attention_output.squeeze(1), text_features, image_features), dim=1)
         logits = self.fc(combined_features)
@@ -165,9 +173,10 @@ if __name__ == "__main__":
     img_dir = './Bengali-Aggression-Memes/Dataset/Img/'
     
     # Hyperparameters
-    batch_size = 16
-    learning_rate = 1e-4
-    num_epochs = 5
+    batch_size = 4
+    learning_rate = 5e-5
+    num_epochs = 20
+    weight_decay = 0.01
 
     # Data loaders
     train_loader = get_dataloader(train_csv, img_dir, clip_processor, bangla_bert_tokenizer, batch_size)
@@ -177,7 +186,7 @@ if __name__ == "__main__":
     # Model, criterion, optimizer
     model = MultiModalAggressionModel().to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = Adam(model.parameters(), lr=learning_rate)
+    optimizer = Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 
     # Train the model
     train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs)

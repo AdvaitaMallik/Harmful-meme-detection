@@ -104,14 +104,13 @@ class MultiModalAggressionModel(nn.Module):
         output = self.softmax(logits)
         return output
 
-def validate_model(model, val_loader, criterion, print_wrong = False, path = None):
+def validate_model(model, val_loader, criterion, best_loss):
     model.eval()
     running_loss = 0.0
     all_preds = []
     all_labels = []
-    all_indexes = []
     with torch.no_grad():
-        for images, input_ids, attention_mask, labels, idx in val_loader:
+        for images, input_ids, attention_mask, labels, _ in val_loader:
             images, input_ids, attention_mask, labels = images.to(device), input_ids.to(device), attention_mask.to(device), labels.to(device)
             outputs = model(images, input_ids, attention_mask)
             loss = criterion(outputs, labels)
@@ -121,27 +120,23 @@ def validate_model(model, val_loader, criterion, print_wrong = False, path = Non
             _, labels = torch.max(labels, 1)
             all_preds.extend(preds.cpu().numpy())
             all_labels.extend(labels.cpu().numpy())
-            all_indexes.extend(idx)
         
         epoch_loss = running_loss / len(val_loader.dataset)
-        print(f"Validation Loss: {epoch_loss:.4f}")
+        print(f"Validation Loss: {epoch_loss:.4f}", flush=True)
+        if epoch_loss < best_loss:
+            best_loss = epoch_loss
+            print(f"Saving current model", flush=True)
+            torch.save(model, "./model/best_val")
         print(classification_report(all_labels, all_preds, target_names=['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']), flush=True)
-        if print_wrong:
-            targets = ['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']
-            wrong_indexes = []
-            for i in range(len(all_preds)):
-                if all_preds[i] != all_labels[i]:
-                    wrong_indexes.append([all_indexes[i], targets[all_labels[i]], targets[all_preds[i]]])
-            wrong_indexes  = pd.DataFrame(wrong_indexes)
-            wrong_indexes.columns = ['Index', 'Label', 'Prediction']
-            wrong_indexes.to_csv(path)
         sys.stdout.flush()
+        return best_loss
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
+    val_loss = float('inf')
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
-        for images, input_ids, attention_mask, labels, idx in train_loader:
+        for images, input_ids, attention_mask, labels, _ in train_loader:
             images, input_ids, attention_mask, labels = images.to(device), input_ids.to(device), attention_mask.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = model(images, input_ids, attention_mask)
@@ -153,10 +148,39 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         epoch_loss = running_loss / len(train_loader.dataset)
         print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss:.4f}", flush=True)
         sys.stdout.flush()
-        if epoch != num_epochs - 1:
-            validate_model(model, val_loader, criterion)
-        else:
-            validate_model(model, val_loader, criterion, True, 'validation_misclassified.csv')
+        val_loss = validate_model(model, val_loader, criterion, val_loss)
+
+def final_eval(model, dataset_loader, criterion):
+    model.eval()
+    running_loss = 0.0
+    all_preds = []
+    all_labels = []
+    all_indexes = []
+    with torch.no_grad():
+        for images, input_ids, attention_mask, labels, idx in dataset_loader:
+            images, input_ids, attention_mask, labels = images.to(device), input_ids.to(device), attention_mask.to(device), labels.to(device)
+            outputs = model(images, input_ids, attention_mask)
+            loss = criterion(outputs, labels)
+            running_loss += loss.item() * images.size(0)
+
+            _, preds = torch.max(outputs, 1)
+            _, labels = torch.max(labels, 1)
+            all_preds.extend(preds.cpu().numpy())
+            all_labels.extend(labels.cpu().numpy())
+            all_indexes.extend(idx.cpu().numpy())
+        epoch_loss = running_loss / len(dataset_loader.dataset)
+        print(f"Loss: {epoch_loss:.4f}", flush=True)
+    targets = ['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']
+    wrong_indexes = []
+    for i in range(len(all_preds)):
+        if all_preds[i] != all_labels[i]:
+            wrong_indexes.append([all_indexes[i], targets[all_labels[i]], targets[all_preds[i]]])
+    wrong_indexes  = pd.DataFrame(wrong_indexes)
+    wrong_indexes.columns = ['Index', 'Label', 'Prediction']
+    print(classification_report(all_labels, all_preds, target_names=['NoAg', 'GAg', 'PAg', 'RAg', 'Oth']), flush=True)
+    wrong_indexes.sort_values(by='Index', inplace=True)
+    return wrong_indexes
+
 
 # First time, or in case you have not saved the models
 # clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
@@ -212,9 +236,15 @@ if __name__ == "__main__":
     # Train the model
     train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs)
 
+    # Load model with best performance
+    model = torch.load("./model/best_val")
+
+    # Evaluate on validation data
+    final_eval(model, val_loader, criterion).to_csv('validation_misclassified.csv')
+
     # Evaluate on test data
     print("Evaluating on test data...", flush=True)
-    validate_model(model, test_loader, criterion, True, 'test_misclassified.csv')
+    final_eval(model, test_loader, criterion).to_csv('test_misclassified.csv')
     os.system('osascript -e \'display notification "All epochs are completed." with title "Training Complete"\'')
     print("Do you want to save the model weights? (y/N)", file = sys.stderr, end = "")
     choice = input()

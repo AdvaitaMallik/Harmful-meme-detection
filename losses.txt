@@ -1,294 +1,323 @@
-Epoch 1/20, Loss: 1.4930
-Validation Loss: 1.4251
+Epoch 1/20, Loss: 1.4943
+Validation Loss: 1.4287
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.41      0.71      0.52       181
-         GAg       0.42      0.25      0.31       144
-         PAg       0.58      0.66      0.61       128
-         RAg       0.68      0.71      0.69       133
-         Oth       0.51      0.15      0.23       141
+        NoAg       0.39      0.73      0.51       181
+         GAg       0.45      0.27      0.34       144
+         PAg       0.67      0.63      0.65       128
+         RAg       0.65      0.72      0.69       133
+         Oth       0.44      0.11      0.18       141
 
     accuracy                           0.50       727
    macro avg       0.52      0.49      0.47       727
 weighted avg       0.51      0.50      0.47       727
 
-Epoch 2/20, Loss: 1.3965
-Validation Loss: 1.3919
+Epoch 2/20, Loss: 1.3981
+Validation Loss: 1.3894
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.48      0.49      0.48       181
-         GAg       0.41      0.53      0.46       144
-         PAg       0.78      0.58      0.66       128
-         RAg       0.62      0.81      0.70       133
-         Oth       0.43      0.26      0.32       141
+        NoAg       0.44      0.69      0.54       181
+         GAg       0.45      0.42      0.43       144
+         PAg       0.65      0.66      0.66       128
+         RAg       0.69      0.70      0.69       133
+         Oth       0.52      0.16      0.24       141
 
     accuracy                           0.53       727
-   macro avg       0.54      0.53      0.53       727
-weighted avg       0.53      0.53      0.52       727
+   macro avg       0.55      0.53      0.51       727
+weighted avg       0.54      0.53      0.51       727
 
-Epoch 3/20, Loss: 1.3608
-Validation Loss: 1.3700
+Epoch 3/20, Loss: 1.3604
+Validation Loss: 1.3667
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.48      0.62      0.54       181
-         GAg       0.47      0.40      0.43       144
-         PAg       0.71      0.62      0.67       128
-         RAg       0.60      0.85      0.71       133
+        NoAg       0.51      0.56      0.53       181
+         GAg       0.44      0.54      0.49       144
+         PAg       0.67      0.70      0.68       128
+         RAg       0.66      0.80      0.73       133
+         Oth       0.53      0.21      0.30       141
+
+    accuracy                           0.56       727
+   macro avg       0.56      0.56      0.54       727
+weighted avg       0.55      0.56      0.54       727
+
+Epoch 4/20, Loss: 1.3383
+Validation Loss: 1.3521
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.50      0.62      0.56       181
+         GAg       0.49      0.53      0.51       144
+         PAg       0.70      0.70      0.70       128
+         RAg       0.67      0.82      0.74       133
+         Oth       0.51      0.20      0.29       141
+
+    accuracy                           0.57       727
+   macro avg       0.58      0.58      0.56       727
+weighted avg       0.57      0.57      0.55       727
+
+Epoch 5/20, Loss: 1.3230
+Validation Loss: 1.3529
+              precision    recall  f1-score   support
+
+        NoAg       0.59      0.42      0.49       181
+         GAg       0.47      0.58      0.52       144
+         PAg       0.74      0.60      0.66       128
+         RAg       0.62      0.85      0.72       133
+         Oth       0.45      0.43      0.44       141
+
+    accuracy                           0.57       727
+   macro avg       0.58      0.58      0.57       727
+weighted avg       0.57      0.57      0.56       727
+
+Epoch 6/20, Loss: 1.3084
+Validation Loss: 1.3311
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.56      0.58      0.57       181
+         GAg       0.49      0.65      0.56       144
+         PAg       0.73      0.68      0.70       128
+         RAg       0.69      0.83      0.75       133
          Oth       0.51      0.26      0.35       141
 
-    accuracy                           0.55       727
-   macro avg       0.56      0.55      0.54       727
-weighted avg       0.55      0.55      0.53       727
+    accuracy                           0.59       727
+   macro avg       0.60      0.60      0.59       727
+weighted avg       0.59      0.59      0.58       727
 
-Epoch 4/20, Loss: 1.3414
-Validation Loss: 1.3611
+Epoch 7/20, Loss: 1.2998
+Validation Loss: 1.3268
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.46      0.72      0.56       181
-         GAg       0.53      0.22      0.31       144
-         PAg       0.58      0.80      0.67       128
-         RAg       0.72      0.74      0.73       133
-         Oth       0.53      0.26      0.35       141
-
-    accuracy                           0.55       727
-   macro avg       0.56      0.55      0.52       727
-weighted avg       0.56      0.55      0.52       727
-
-Epoch 5/20, Loss: 1.3243
-Validation Loss: 1.3443
-              precision    recall  f1-score   support
-
-        NoAg       0.57      0.49      0.53       181
-         GAg       0.49      0.60      0.54       144
-         PAg       0.70      0.72      0.71       128
-         RAg       0.68      0.83      0.75       133
-         Oth       0.46      0.34      0.39       141
-
-    accuracy                           0.58       727
-   macro avg       0.58      0.60      0.58       727
-weighted avg       0.58      0.58      0.58       727
-
-Epoch 6/20, Loss: 1.3098
-Validation Loss: 1.3303
-              precision    recall  f1-score   support
-
-        NoAg       0.56      0.54      0.55       181
-         GAg       0.51      0.60      0.55       144
-         PAg       0.73      0.71      0.72       128
-         RAg       0.70      0.83      0.76       133
-         Oth       0.50      0.35      0.41       141
+        NoAg       0.58      0.57      0.57       181
+         GAg       0.50      0.67      0.58       144
+         PAg       0.61      0.83      0.70       128
+         RAg       0.78      0.75      0.76       133
+         Oth       0.59      0.21      0.31       141
 
     accuracy                           0.60       727
-   macro avg       0.60      0.61      0.60       727
-weighted avg       0.59      0.60      0.59       727
+   macro avg       0.61      0.61      0.58       727
+weighted avg       0.61      0.60      0.58       727
 
-Epoch 7/20, Loss: 1.2989
-Validation Loss: 1.3284
+Epoch 8/20, Loss: 1.2890
+Validation Loss: 1.3154
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.46      0.74      0.57       181
-         GAg       0.55      0.46      0.50       144
-         PAg       0.78      0.64      0.70       128
-         RAg       0.75      0.83      0.79       133
-         Oth       0.57      0.26      0.35       141
-
-    accuracy                           0.59       727
-   macro avg       0.62      0.58      0.58       727
-weighted avg       0.61      0.59      0.58       727
-
-Epoch 8/20, Loss: 1.2877
-Validation Loss: 1.3167
-              precision    recall  f1-score   support
-
-        NoAg       0.49      0.72      0.58       181
+        NoAg       0.52      0.70      0.60       181
          GAg       0.58      0.55      0.56       144
-         PAg       0.77      0.69      0.72       128
-         RAg       0.77      0.80      0.78       133
-         Oth       0.52      0.27      0.36       141
+         PAg       0.72      0.76      0.74       128
+         RAg       0.74      0.81      0.78       133
+         Oth       0.54      0.26      0.35       141
 
     accuracy                           0.61       727
-   macro avg       0.62      0.60      0.60       727
+   macro avg       0.62      0.62      0.61       727
 weighted avg       0.61      0.61      0.60       727
 
-Epoch 9/20, Loss: 1.2831
-Validation Loss: 1.3125
+Epoch 9/20, Loss: 1.2816
+Validation Loss: 1.3133
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.56      0.67      0.61       181
-         GAg       0.58      0.58      0.58       144
-         PAg       0.77      0.64      0.70       128
-         RAg       0.75      0.83      0.79       133
-         Oth       0.48      0.39      0.43       141
+        NoAg       0.60      0.51      0.55       181
+         GAg       0.57      0.60      0.59       144
+         PAg       0.76      0.73      0.75       128
+         RAg       0.72      0.83      0.77       133
+         Oth       0.43      0.43      0.43       141
+
+    accuracy                           0.61       727
+   macro avg       0.61      0.62      0.62       727
+weighted avg       0.61      0.61      0.61       727
+
+Epoch 10/20, Loss: 1.2748
+Validation Loss: 1.3085
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.52      0.72      0.61       181
+         GAg       0.56      0.61      0.59       144
+         PAg       0.76      0.71      0.73       128
+         RAg       0.80      0.77      0.79       133
+         Oth       0.56      0.28      0.37       141
 
     accuracy                           0.62       727
-   macro avg       0.63      0.62      0.62       727
-weighted avg       0.62      0.62      0.62       727
+   macro avg       0.64      0.62      0.62       727
+weighted avg       0.63      0.62      0.61       727
 
-Epoch 10/20, Loss: 1.2750
-Validation Loss: 1.3083
+Epoch 11/20, Loss: 1.2661
+Validation Loss: 1.2996
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.50      0.73      0.59       181
-         GAg       0.58      0.64      0.61       144
-         PAg       0.76      0.73      0.74       128
-         RAg       0.81      0.78      0.79       133
-         Oth       0.61      0.23      0.34       141
-
-    accuracy                           0.62       727
-   macro avg       0.65      0.62      0.62       727
-weighted avg       0.64      0.62      0.61       727
-
-Epoch 11/20, Loss: 1.2680
-Validation Loss: 1.3032
-              precision    recall  f1-score   support
-
-        NoAg       0.61      0.54      0.57       181
-         GAg       0.52      0.68      0.59       144
-         PAg       0.79      0.63      0.70       128
-         RAg       0.79      0.82      0.80       133
-         Oth       0.47      0.46      0.47       141
-
-    accuracy                           0.62       727
-   macro avg       0.64      0.63      0.63       727
-weighted avg       0.63      0.62      0.62       727
-
-Epoch 12/20, Loss: 1.2629
-Validation Loss: 1.2975
-              precision    recall  f1-score   support
-
-        NoAg       0.57      0.62      0.59       181
-         GAg       0.58      0.62      0.60       144
-         PAg       0.73      0.76      0.75       128
-         RAg       0.73      0.85      0.79       133
-         Oth       0.56      0.35      0.43       141
-
-    accuracy                           0.64       727
-   macro avg       0.64      0.64      0.63       727
-weighted avg       0.63      0.64      0.63       727
-
-Epoch 13/20, Loss: 1.2599
-Validation Loss: 1.2975
-              precision    recall  f1-score   support
-
-        NoAg       0.62      0.53      0.57       181
-         GAg       0.55      0.64      0.59       144
-         PAg       0.72      0.73      0.73       128
+        NoAg       0.58      0.62      0.60       181
+         GAg       0.55      0.63      0.59       144
+         PAg       0.75      0.73      0.74       128
          RAg       0.78      0.82      0.80       133
-         Oth       0.48      0.46      0.47       141
+         Oth       0.49      0.35      0.41       141
+
+    accuracy                           0.63       727
+   macro avg       0.63      0.63      0.63       727
+weighted avg       0.62      0.63      0.62       727
+
+Epoch 12/20, Loss: 1.2643
+Validation Loss: 1.2967
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.59      0.57      0.58       181
+         GAg       0.57      0.65      0.60       144
+         PAg       0.73      0.76      0.75       128
+         RAg       0.80      0.81      0.81       133
+         Oth       0.45      0.38      0.41       141
+
+    accuracy                           0.63       727
+   macro avg       0.63      0.63      0.63       727
+weighted avg       0.62      0.63      0.62       727
+
+Epoch 13/20, Loss: 1.2613
+Validation Loss: 1.2943
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.55      0.67      0.60       181
+         GAg       0.59      0.62      0.61       144
+         PAg       0.72      0.77      0.75       128
+         RAg       0.80      0.78      0.79       133
+         Oth       0.53      0.33      0.41       141
+
+    accuracy                           0.63       727
+   macro avg       0.64      0.64      0.63       727
+weighted avg       0.63      0.63      0.63       727
+
+Epoch 14/20, Loss: 1.2551
+Validation Loss: 1.2919
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.59      0.56      0.58       181
+         GAg       0.56      0.60      0.58       144
+         PAg       0.77      0.75      0.76       128
+         RAg       0.71      0.85      0.77       133
+         Oth       0.51      0.43      0.47       141
 
     accuracy                           0.63       727
    macro avg       0.63      0.64      0.63       727
-weighted avg       0.63      0.63      0.63       727
+weighted avg       0.62      0.63      0.62       727
 
-Epoch 14/20, Loss: 1.2573
-Validation Loss: 1.2912
+Epoch 15/20, Loss: 1.2527
+Validation Loss: 1.2913
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.60      0.59      0.59       181
-         GAg       0.58      0.68      0.62       144
-         PAg       0.70      0.80      0.75       128
-         RAg       0.77      0.84      0.80       133
-         Oth       0.57      0.35      0.44       141
-
-    accuracy                           0.65       727
-   macro avg       0.64      0.65      0.64       727
-weighted avg       0.64      0.65      0.63       727
-
-Epoch 15/20, Loss: 1.2528
-Validation Loss: 1.2915
-              precision    recall  f1-score   support
-
-        NoAg       0.55      0.67      0.61       181
-         GAg       0.64      0.59      0.62       144
-         PAg       0.70      0.75      0.72       128
-         RAg       0.83      0.78      0.81       133
-         Oth       0.50      0.40      0.44       141
-
-    accuracy                           0.64       727
-   macro avg       0.65      0.64      0.64       727
-weighted avg       0.64      0.64      0.63       727
-
-Epoch 16/20, Loss: 1.2501
-Validation Loss: 1.2908
-              precision    recall  f1-score   support
-
-        NoAg       0.54      0.70      0.61       181
-         GAg       0.58      0.72      0.64       144
-         PAg       0.78      0.68      0.73       128
-         RAg       0.85      0.76      0.80       133
-         Oth       0.57      0.33      0.42       141
-
-    accuracy                           0.64       727
-   macro avg       0.66      0.64      0.64       727
-weighted avg       0.65      0.64      0.63       727
-
-Epoch 17/20, Loss: 1.2470
-Validation Loss: 1.2873
-              precision    recall  f1-score   support
-
-        NoAg       0.53      0.72      0.61       181
-         GAg       0.62      0.54      0.58       144
-         PAg       0.74      0.77      0.76       128
-         RAg       0.78      0.82      0.80       133
-         Oth       0.54      0.32      0.40       141
+        NoAg       0.54      0.69      0.60       181
+         GAg       0.61      0.53      0.57       144
+         PAg       0.80      0.70      0.75       128
+         RAg       0.74      0.85      0.79       133
+         Oth       0.51      0.39      0.44       141
 
     accuracy                           0.63       727
    macro avg       0.64      0.63      0.63       727
 weighted avg       0.63      0.63      0.62       727
 
-Epoch 18/20, Loss: 1.2408
-Validation Loss: 1.2946
+Epoch 16/20, Loss: 1.2497
+Validation Loss: 1.2843
+Saving current model
               precision    recall  f1-score   support
 
-        NoAg       0.65      0.48      0.55       181
-         GAg       0.53      0.72      0.61       144
-         PAg       0.78      0.72      0.75       128
-         RAg       0.61      0.90      0.73       133
-         Oth       0.57      0.33      0.42       141
+        NoAg       0.55      0.71      0.62       181
+         GAg       0.61      0.60      0.61       144
+         PAg       0.68      0.80      0.74       128
+         RAg       0.79      0.84      0.82       133
+         Oth       0.63      0.26      0.37       141
 
-    accuracy                           0.62       727
-   macro avg       0.63      0.63      0.61       727
-weighted avg       0.63      0.62      0.61       727
+    accuracy                           0.64       727
+   macro avg       0.65      0.64      0.63       727
+weighted avg       0.64      0.64      0.63       727
 
-Epoch 19/20, Loss: 1.2421
-Validation Loss: 1.2858
+Epoch 17/20, Loss: 1.2472
+Validation Loss: 1.2874
               precision    recall  f1-score   support
 
-        NoAg       0.51      0.78      0.61       181
-         GAg       0.60      0.56      0.58       144
-         PAg       0.79      0.70      0.74       128
-         RAg       0.79      0.83      0.81       133
-         Oth       0.63      0.27      0.38       141
+        NoAg       0.58      0.63      0.61       181
+         GAg       0.57      0.66      0.61       144
+         PAg       0.76      0.72      0.74       128
+         RAg       0.69      0.85      0.76       133
+         Oth       0.56      0.33      0.41       141
 
     accuracy                           0.63       727
-   macro avg       0.66      0.63      0.62       727
-weighted avg       0.65      0.63      0.62       727
+   macro avg       0.63      0.64      0.63       727
+weighted avg       0.63      0.63      0.62       727
 
-Epoch 20/20, Loss: 1.2400
+Epoch 18/20, Loss: 1.2459
+Validation Loss: 1.2825
+Saving current model
+              precision    recall  f1-score   support
+
+        NoAg       0.59      0.64      0.61       181
+         GAg       0.62      0.62      0.62       144
+         PAg       0.79      0.67      0.73       128
+         RAg       0.76      0.85      0.80       133
+         Oth       0.49      0.45      0.47       141
+
+    accuracy                           0.64       727
+   macro avg       0.65      0.65      0.65       727
+weighted avg       0.64      0.64      0.64       727
+
+Epoch 19/20, Loss: 1.2428
 Validation Loss: 1.2852
               precision    recall  f1-score   support
 
-        NoAg       0.57      0.67      0.61       181
-         GAg       0.64      0.57      0.60       144
-         PAg       0.62      0.88      0.73       128
-         RAg       0.88      0.75      0.81       133
-         Oth       0.55      0.36      0.44       141
+        NoAg       0.63      0.54      0.58       181
+         GAg       0.58      0.69      0.63       144
+         PAg       0.76      0.73      0.74       128
+         RAg       0.84      0.77      0.81       133
+         Oth       0.46      0.51      0.48       141
 
     accuracy                           0.64       727
-   macro avg       0.65      0.65      0.64       727
-weighted avg       0.65      0.64      0.63       727
+   macro avg       0.66      0.65      0.65       727
+weighted avg       0.65      0.64      0.64       727
 
-Evaluating on test data...
-Validation Loss: 1.2881
+Epoch 20/20, Loss: 1.2409
+Validation Loss: 1.2900
               precision    recall  f1-score   support
 
-        NoAg       0.58      0.67      0.62       182
-         GAg       0.66      0.58      0.62       144
-         PAg       0.62      0.84      0.71       128
-         RAg       0.84      0.79      0.81       132
-         Oth       0.58      0.38      0.46       142
+        NoAg       0.68      0.44      0.53       181
+         GAg       0.52      0.72      0.61       144
+         PAg       0.82      0.69      0.75       128
+         RAg       0.69      0.86      0.76       133
+         Oth       0.49      0.48      0.49       141
 
-    accuracy                           0.65       728
-   macro avg       0.66      0.65      0.64       728
-weighted avg       0.65      0.65      0.64       728
+    accuracy                           0.62       727
+   macro avg       0.64      0.64      0.63       727
+weighted avg       0.64      0.62      0.62       727
+
+Loss: 1.2825
+              precision    recall  f1-score   support
+
+        NoAg       0.59      0.64      0.61       181
+         GAg       0.62      0.62      0.62       144
+         PAg       0.79      0.67      0.73       128
+         RAg       0.76      0.85      0.80       133
+         Oth       0.49      0.45      0.47       141
+
+    accuracy                           0.64       727
+   macro avg       0.65      0.65      0.65       727
+weighted avg       0.64      0.64      0.64       727
+
+Evaluating on test data...
+Loss: 1.2867
+              precision    recall  f1-score   support
+
+        NoAg       0.56      0.60      0.58       182
+         GAg       0.66      0.62      0.64       144
+         PAg       0.85      0.71      0.77       128
+         RAg       0.72      0.85      0.78       132
+         Oth       0.50      0.46      0.48       142
+
+    accuracy                           0.64       728
+   macro avg       0.66      0.65      0.65       728
+weighted avg       0.65      0.64      0.64       728
 

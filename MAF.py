@@ -1,5 +1,5 @@
 # Install necessary packages
-# pip install torch torchvision torchaudio transformers pandas pillow scikit-learn
+# pip install -r requirements.txt
 # git clone https://github.com/shawlyahsan/Bengali-Aggression-Memes
 
 import os, sys
@@ -10,7 +10,6 @@ import torch.nn as nn
 from torch.optim import Adam
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
-from transformers import CLIPProcessor, CLIPModel, BertModel, BertTokenizer
 from sklearn.metrics import classification_report
 
 # Device configuration
@@ -183,6 +182,7 @@ def final_eval(model, dataset_loader, criterion):
 
 
 # First time, or in case you have not saved the models
+# from transformers import CLIPProcessor, CLIPModel, BertModel, BertTokenizer
 # clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 # clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 # bangla_bert_model = BertModel.from_pretrained("sagorsarker/bangla-bert-base")
